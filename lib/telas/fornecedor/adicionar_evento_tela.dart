@@ -1,0 +1,113 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class AdicionarEventoTela extends StatefulWidget {
+  @override
+  _AdicionarEventoTelaState createState() => _AdicionarEventoTelaState();
+}
+
+class _AdicionarEventoTelaState extends State<AdicionarEventoTela> {
+  final _formKey = GlobalKey<FormState>();
+  final _nomeController = TextEditingController();
+  final _dataController = TextEditingController();
+  final _descricaoController = TextEditingController();
+  final _localController = TextEditingController();
+  final _tipoController = TextEditingController();
+
+  void _adicionarEvento() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          await FirebaseFirestore.instance.collection('eventos').add({
+            'nome': _nomeController.text,
+            'data': _dataController.text,
+            'descricao': _descricaoController.text,
+            'local': _localController.text,
+            'tipo': _tipoController.text,
+            'userId': user.uid,
+          });
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Evento adicionado com sucesso')));
+          Navigator.pop(context);
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Erro ao adicionar evento: $e')));
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Adicionar Evento'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _nomeController,
+                decoration: InputDecoration(labelText: 'Nome'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira o nome';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _dataController,
+                decoration: InputDecoration(labelText: 'Data'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira a data';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _descricaoController,
+                decoration: InputDecoration(labelText: 'Descrição'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira a descrição';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _localController,
+                decoration: InputDecoration(labelText: 'Local'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira o local';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _tipoController,
+                decoration: InputDecoration(labelText: 'Tipo'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira o tipo';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _adicionarEvento,
+                child: Text('Adicionar Evento'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

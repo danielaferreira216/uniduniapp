@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "110623889403",
+    "project_id": "uniduniapp-15768",
+    "storage_bucket": "uniduniapp-15768.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110623889403:android:9c0a759d33edf8d4521d5e",
+        "android_client_info": {
+          "package_name": "com.example.projeto_p2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaE8gQIGr3E7XgzSRemTLfAKMMvv82ik4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
